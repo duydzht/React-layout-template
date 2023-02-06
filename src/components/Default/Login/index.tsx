@@ -29,18 +29,21 @@ const Login = (props: any) => {
 
   const handleLogin = async () => {
     if (user.username && user.password) {
-      const res = await DefaultService.postLogin(user)
+      try {
+        const res = await DefaultService.postLogin(user);
 
-      if (res.data.success) {
-        setToken(res?.data?.data?.token);
-        setUserInfo(res?.data?.data?.user)
-      } else {
-        toaster.danger(res?.response?.data?.message || res?.data?.message || "Lỗi")
+        if (res?.data?.success) {
+          setToken(res?.data?.data?.token);
+          setUserInfo(res?.data?.data?.user);
+        } else {
+          toaster.danger(res?.response?.data?.message || "Lỗi");
+        }
+        console.log(res)
+      } catch (error: any) {
+        toaster.danger("ERROR!")
       }
-
-      console.log(res)
     } else {
-      toaster.warning("Vui lòng nhập đầy đủ thông tin")
+      toaster.warning("Vui lòng nhập đầy đủ thông tin");
     }
   };
 
